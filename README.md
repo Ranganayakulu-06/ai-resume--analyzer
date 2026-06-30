@@ -1,97 +1,82 @@
 # AI Resume Analyzer
 
-🤖 An intelligent application that analyzes resumes, compares them with job descriptions, and provides actionable feedback to improve ATS compatibility.
+🚀 Analyze resumes and match them with job descriptions using AI
 
-## 🎯 Features
+## 📋 Overview
 
-- 📄 **Resume Upload** - Support for PDF and DOCX formats
-- 💼 **Job Description Input** - Paste or upload job requirements
-- 🔍 **Skills Extraction** - Automatic extraction of candidate skills
-- ⚠️ **Missing Skills Identification** - Highlights skills gaps
-- 🎯 **ATS Compatibility Score** - Scoring for Applicant Tracking Systems
-- 📋 **Resume Summary** - AI-powered resume overview
-- 📊 **Section-wise Feedback** - Detailed feedback for Education, Experience, Skills, Projects
-- 💡 **Suggested Keywords** - Keywords to improve ATS matching
-- 📥 **Downloadable Reports** - Generate and download analysis reports
-- 📚 **Analysis History** - Store and review previous analyses
+AI Resume Analyzer is a full-stack web application that helps job seekers:
+- Upload and analyze resumes
+- Match resumes against job descriptions
+- Get ATS compatibility scores
+- Receive actionable improvement suggestions
 
-## 🏗️ Architecture
-
-```
-┌─────────────────────────────────┐
-│     React Frontend (JSX)        │
-│  - Resume Upload                │
-│  - Job Description Input        │
-│  - Analysis Report Display      │
-│  - History Management           │
-└────────────┬────────────────────┘
-             │ HTTP/REST
-┌────────────▼────────────────────┐
-│     FastAPI Backend (Python)    │
-│  - Document Processing          │
-│  - AI Analysis (OpenAI/Claude)  │
-│  - ATS Scoring                  │
-│  - Report Generation            │
-└────────────┬────────────────────┘
-             │ SQL
-┌────────────▼────────────────────┐
-│   PostgreSQL Database           │
-│  - Users                        │
-│  - Resumes                      │
-│  - Job Descriptions             │
-│  - Analysis Results             │
-└─────────────────────────────────┘
-```
-
-## 🚀 Tech Stack
+## 🛠 Tech Stack
 
 ### Backend
-- **FastAPI** - Modern Python web framework
-- **PostgreSQL** - Relational database
-- **SQLAlchemy** - ORM for database operations
-- **PyMuPDF/pdfplumber** - PDF text extraction
-- **python-docx** - DOCX file parsing
-- **OpenAI/Anthropic API** - AI analysis
-- **Alembic** - Database migrations
-- **Pydantic** - Data validation
+- **Framework**: FastAPI
+- **Database**: PostgreSQL
+- **ORM**: SQLAlchemy
+- **AI**: OpenAI GPT-3.5, Claude
+- **File Processing**: PyMuPDF, python-docx
 
 ### Frontend
-- **React 18+** - UI library
-- **Vite** - Build tool
-- **React Router** - Routing
-- **Axios** - HTTP client
-- **CSS3** - Styling
+- **Framework**: React 18
+- **Build Tool**: Vite
+- **Styling**: CSS3
+- **HTTP Client**: Axios
+- **Routing**: React Router v6
 
-## 📁 Project Structure
+### DevOps
+- **Containerization**: Docker & Docker Compose
+- **Orchestration**: Kubernetes
+- **Database**: PostgreSQL 15
 
-```
-ai-resume-analyzer/
-├── backend/                 # FastAPI backend
-├── frontend/                # React frontend
-├── docs/                    # Documentation
-└── README.md
-```
-
-## 🔧 Quick Start
+## 🚀 Quick Start
 
 ### Prerequisites
-- Python 3.9+
-- Node.js 18+
-- PostgreSQL 12+
-- OpenAI/Claude API key
+- Docker & Docker Compose
+- Node.js 18+ (for local development)
+- Python 3.9+ (for local development)
+- PostgreSQL 12+ (for local development)
 
-### Backend Setup
+### Using Docker Compose
+
+1. **Clone repository**
+   ```bash
+   git clone https://github.com/Ranganayakulu-06/ai-resume--analyzer.git
+   cd ai-resume--analyzer
+   ```
+
+2. **Setup environment**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your configuration
+   ```
+
+3. **Start services**
+   ```bash
+   docker-compose up -d
+   ```
+
+4. **Access application**
+   - Frontend: http://localhost:5173
+   - Backend API: http://localhost:8000
+   - API Documentation: http://localhost:8000/docs
+
+### Local Development
+
+#### Backend
 
 ```bash
 cd backend
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 cp .env.example .env
-# Configure .env with your database and API keys
-alembic upgrade head
 uvicorn app.main:app --reload
 ```
 
-### Frontend Setup
+#### Frontend
 
 ```bash
 cd frontend
@@ -100,27 +85,97 @@ cp .env.example .env
 npm run dev
 ```
 
-## 📖 API Documentation
+## 📁 Project Structure
 
-Once the backend is running, visit:
-- **Swagger UI**: `http://localhost:8000/docs`
-- **ReDoc**: `http://localhost:8000/redoc`
+```
+ai-resume--analyzer/
+├── backend/
+│   ├── app/
+│   │   ├── api/           # API routes
+│   │   ├── core/          # Configuration
+│   │   ├── crud/          # Database operations
+│   │   ├── db/            # Database models
+│   │   ├── models/        # Pydantic schemas
+│   │   ├── services/      # Business logic
+│   │   └── tests/         # Tests
+│   ├── requirements.txt
+│   └── Dockerfile
+├── frontend/
+│   ├── src/
+│   │   ├── components/    # Reusable components
+│   │   ├── features/      # Feature modules
+│   │   ├── pages/         # Route pages
+│   │   ├── services/      # API clients
+│   │   ├── utils/         # Utilities
+│   │   └── styles/        # Global styles
+│   ├── package.json
+│   └── Dockerfile
+├── k8s/                   # Kubernetes configs
+├── docker-compose.yml
+└── README.md
+```
+
+## 🔑 API Endpoints
+
+### Resume
+- `POST /api/v1/resume/upload` - Upload resume
+- `GET /api/v1/resume/` - List resumes
+- `GET /api/v1/resume/{id}` - Get resume details
+
+### Job Description
+- `POST /api/v1/job-description/` - Create job description
+- `GET /api/v1/job-description/` - List job descriptions
+- `GET /api/v1/job-description/{id}` - Get job description
+
+### Analysis
+- `POST /api/v1/analysis/` - Analyze resume
+- `GET /api/v1/analysis/` - List analyses
+- `GET /api/v1/analysis/{id}` - Get analysis details
+
+### Reports
+- `GET /api/v1/reports/{id}` - Get report
+- `GET /api/v1/reports/{id}/download` - Download PDF report
+
+## 🔐 Environment Variables
+
+See `.env.example` files in backend and frontend directories.
 
 ## 📚 Documentation
 
-Detailed documentation is available in the `docs/` folder:
-- [API Specification](./docs/api-spec.md)
-- [System Architecture](./docs/architecture.md)
-- [Setup Guide](./docs/setup-guide.md)
+- [Backend README](./backend/README.md)
+- [Frontend README](./frontend/README.md)
+- [Deployment Guide](./DEPLOYMENT.md)
+
+## 🧪 Testing
+
+### Backend
+```bash
+cd backend
+pytest
+```
+
+### Frontend
+```bash
+cd frontend
+npm test
+```
+
+## 🐳 Docker Deployment
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed Docker and Kubernetes setup.
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please follow the coding standards and create a pull request.
+1. Fork repository
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open Pull Request
 
 ## 📝 License
 
-MIT License - Feel free to use this project for personal or commercial purposes.
+This project is licensed under the MIT License.
 
-## 🆘 Support
+## 📧 Support
 
-For issues or questions, please create a GitHub issue.
+For issues and questions, please open an issue on GitHub.
